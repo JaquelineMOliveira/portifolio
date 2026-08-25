@@ -1,0 +1,117 @@
+R² Elasticidade 12M = 
+VAR DataFinal =
+    MAX(dCalendario[Data])
+
+VAR Meses12M =
+    ADDCOLUMNS(
+        GENERATESERIES(0, 11, 1),
+
+        "@InicioMes",
+            EOMONTH(
+                DataFinal,
+                -[Value] - 1
+            ) + 1,
+
+        "@FimMes",
+            EOMONTH(
+                DataFinal,
+                -[Value]
+            )
+    )
+
+VAR Base12M =
+    ADDCOLUMNS(
+        Meses12M,
+
+        "@Preco",
+            VAR InicioMes = [@InicioMes]
+            VAR FimMes = [@FimMes]
+
+            RETURN
+                CALCULATE(
+                    [PMV],
+                    REMOVEFILTERS(dCalendario[Data]),
+                    DATESBETWEEN(
+                        dCalendario[Data],
+                        InicioMes,
+                        FimMes
+                    )
+                ),
+
+        "@Volume",
+            VAR InicioMes = [@InicioMes]
+            VAR FimMes = [@FimMes]
+
+            RETURN
+                CALCULATE(
+                    [Volume Total],
+                    REMOVEFILTERS(dCalendario[Data]),
+                    DATESBETWEEN(
+                        dCalendario[Data],
+                        InicioMes,
+                        FimMes
+                    )
+                )
+    )
+
+VAR BaseValida =
+    FILTER(
+        Base12M,
+        NOT ISBLANK([@Preco])
+            && NOT ISBLANK([@Volume])
+            && [@Preco] > 0
+            && [@Volume] > 0
+    )
+
+VAR MediaLnPreco =
+    AVERAGEX(
+        BaseValida,
+        LN([@Preco])
+    )
+
+VAR MediaLnVolume =
+    AVERAGEX(
+        BaseValida,
+        LN([@Volume])
+    )
+
+VAR Numerador =
+    SUMX(
+        BaseValida,
+        (LN([@Preco]) - MediaLnPreco)
+            *
+        (LN([@Volume]) - MediaLnVolume)
+    )
+
+VAR SomaQuadradosPreco =
+    SUMX(
+        BaseValida,
+        (LN([@Preco]) - MediaLnPreco) ^ 2
+    )
+
+VAR SomaQuadradosVolume =
+    SUMX(
+        BaseValida,
+        (LN([@Volume]) - MediaLnVolume) ^ 2
+    )
+
+VAR Denominador =
+    SQRT(
+        SomaQuadradosPreco
+            *
+        SomaQuadradosVolume
+    )
+
+VAR PearsonLog =
+    DIVIDE(
+        Numerador,
+        Denominador
+    )
+
+RETURN
+IF(
+    COUNTROWS(BaseValida) < 6
+        || Denominador = 0,
+    BLANK(),
+    PearsonLog ^ 2
+)
