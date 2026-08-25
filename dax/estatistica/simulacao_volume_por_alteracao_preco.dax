@@ -1,0 +1,18 @@
+Volume Simulado = 
+VAR PrecoAtual    = [PMT]
+VAR PrecoSimulado = [Preço Simulado]
+VAR Elasticidade  = [Elasticidade Histórica 12M]
+VAR VolumeAtual   = [Volume Total]
+
+RETURN
+ROUNDUP(IF(
+    ISBLANK(Elasticidade)
+        || ISBLANK(VolumeAtual)
+        || PrecoAtual <= 0
+        || VolumeAtual <= 0,
+
+    BLANK(),
+
+    VolumeAtual  * POWER( DIVIDE( PrecoSimulado, PrecoAtual ),    Elasticidade
+        )
+),0)
