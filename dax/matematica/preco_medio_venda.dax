@@ -1,0 +1,6 @@
+PMV = 
+DIVIDE(
+    SUMX(fVendas, fVendas[preco_venda] * fVendas[vol_vendido]), 
+    [Volume Total],
+    0
+)
