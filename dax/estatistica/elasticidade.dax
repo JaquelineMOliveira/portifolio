@@ -1,0 +1,13 @@
+Elasticidade = 
+VAR VarVolume = 
+    DIVIDE(
+        [Volume Total] - [Volume Anterior], 
+        [Volume Anterior]
+    )
+VAR VarPreco = 
+    DIVIDE(
+        [PMV] - [PMV M-1 Dinamico], 
+        [PMV M-1 Dinamico]
+    )
+RETURN
+DIVIDE(VarVolume, VarPreco, 0)
