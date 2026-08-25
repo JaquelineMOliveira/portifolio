@@ -1,0 +1,81 @@
+WITH
+
+CANAIS      AS (SELECT 
+			
+				CASE ZZ6.ZZ6_COD
+					WHEN '00012' THEN 'grandes_contas'
+					WHEN '00015' THEN 'distribuidor'
+				ELSE 'pequenos_comercios'
+				END AS canal,
+				SA1.A1_TTBPREC AS tabela
+               	FROM SA1010 SA1
+               				INNER JOIN ZZ6010 ZZ6 ON    ZZ6.ZZ6_COD     = SA1.A1_TCDRAMO
+               	WHERE ZZ6.D_E_L_E_T_  = ''
+               	GROUP BY 
+				
+				CASE ZZ6.ZZ6_COD
+					WHEN '00012' THEN 'grandes_contas'
+					WHEN '00015' THEN 'distribuidor'
+				ELSE 'pequenos_comercios'
+				END AS canal,
+				END, SA1.A1_TTBPREC
+				
+				),
+
+PRODUTOS    AS (SELECT SB1.B1_COD AS id_produto,
+                       TRIM(SB1.B1_COD) + ' - ' + UPPER(TRIM(SB1.B1_DESC)) AS desc_produto,
+                       SB1.B1_GRUPO
+                FROM SB1010 SB1
+                WHERE SB1.B1_FILIAL  = '010121'
+                            AND SB1.D_E_L_E_T_  = ''
+                            AND SB1.B1_MSBLQL  = '2'
+                            AND SB1.B1_TIPO    IN ('ME', 'PA')
+                            AND SB1.B1_GRUPO < '500000'
+                                                    ),
+
+TABELAS     AS (SELECT DA1.DA1_CODTAB AS id_tabela_preco,
+                       DA1.DA1_CODPRO AS id_produto,
+                       CASE WHEN DA1.DA1_ATIVO = '2' THEN 'bloqueado' ELSE 'desbloqueado' END AS bloq_produto, --2=BLOQUEADO 1=DESBLOQUEADO
+                       DA1.DA1_PRCVEN AS preco_venda
+                FROM DA1010 DA1
+                WHERE DA1.DA1_FILIAL = '010101'
+                            AND DA1.D_E_L_E_T_  = ''
+                        
+                ),
+
+DA0         AS  (SELECT   DA0_FILIAL        AS id_filial,
+		                  DA0.DA0_CODTAB        AS id_tabela,
+                          DA0.DA0_DESCRI    AS desc_tabela,
+		                  CASE WHEN DA0.DA0_ATIVO = '2' THEN 'bloqueado' ELSE 'desbloqueado' END AS bloq_tabela
+			
+                FROM DA0010 AS DA0
+                WHERE DA0.D_E_L_E_T_ <> '*'
+				      AND DA0.DA0_FILIAL = '010121'
+						
+                        ),
+LISTA_TABELAS AS (
+                    SELECT DISTINCT id_tabela
+                    FROM DA0
+                    )
+
+                    SELECT
+                        C.canal, 
+                        T.id_tabela,
+                        D.desc_tabela,
+						            P.desc_produto,
+                        D.bloq_tabela,
+                        preco_venda,
+                        TB.bloq_produto
+
+
+
+                    FROM LISTA_TABELAS T
+                    CROSS JOIN PRODUTOS P
+
+                    LEFT JOIN DA0 D ON D.id_tabela = T.id_tabela
+                    LEFT JOIN TABELAS TB  ON  TB.id_tabela_preco = T.id_tabela
+                                          AND TB.id_produto = P.id_produto
+                   LEFT JOIN CANAIS C ON C.tabela = T.id_tabela 
+
+
+				  ORDER BY	7,8;
