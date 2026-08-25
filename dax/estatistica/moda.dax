@@ -1,0 +1,16 @@
+Moda = 
+VAR TabelaContagem = 
+    ADDCOLUMNS(
+        VALUES(fVendas[preco_venda]),
+        "Contagem", CALCULATE(COUNTROWS(fVendas))
+    )
+VAR ContagemMaxima = MAXX(TabelaContagem, [Contagem])
+RETURN
+    IF(
+        ContagemMaxima > 1,
+        MAXX(
+            TOPN(1, TabelaContagem, [Contagem], DESC),
+            fVendas[preco_venda]
+        ),
+        0
+    )
