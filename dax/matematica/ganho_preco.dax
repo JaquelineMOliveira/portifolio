@@ -1,0 +1,14 @@
+Ganho/Perda de Preço = 
+VAR DiferencaPreco =
+    [PMV] - [PMV M-1 Dinamico]
+
+VAR VolumeAtual =
+    [Volume Total]
+
+RETURN
+IF(
+    ISBLANK([PMV M-1 Dinamico])
+        || ISBLANK(VolumeAtual),
+    BLANK(),
+    DiferencaPreco * VolumeAtual
+)
