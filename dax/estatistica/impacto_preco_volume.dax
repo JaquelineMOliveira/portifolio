@@ -1,0 +1,22 @@
+Impacto Preço no Volume (Pearson) = 
+VAR TabelaBase = 
+    FILTER(
+        'fVendas', 
+        NOT ISBLANK(fVendas[preco_venda]) && NOT ISBLANK(fVendas[vol_vendido])
+    )
+VAR N = COUNTROWS(TabelaBase)
+VAR SomaX =     SUMX(TabelaBase, 'fVendas'[preco_venda])
+VAR SomaY =     SUMX(TabelaBase, 'fVendas'[vol_vendido])
+VAR SomaXY =    SUMX(TabelaBase, 'fVendas'[preco_venda] * 'fVendas'[vol_vendido])
+VAR SomaX2 =    SUMX(TabelaBase, 'fVendas'[preco_venda] ^ 2)
+VAR SomaY2 =    SUMX(TabelaBase, 'fVendas'[vol_vendido] ^ 2)
+
+VAR Numerador = (N * SomaXY) - (SomaX * SomaY)
+
+VAR VarianciaX = (N * SomaX2) - (SomaX ^ 2)
+VAR VarianciaY = (N * SomaY2) - (SomaY ^ 2)
+VAR Denominador = SQRT( MAX(0, VarianciaX) * MAX(0, VarianciaY) )
+
+
+RETURN
+IF(Denominador <= 0, BLANK(), DIVIDE(Numerador, Denominador))
