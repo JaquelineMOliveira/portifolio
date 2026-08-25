@@ -1,0 +1,25 @@
+Diagnóstico Preço-Demanda = 
+VAR Pearson = [Pearson 12M]
+VAR Elasticidade = [Elasticidade Histórica 12M]
+
+RETURN
+SWITCH(
+    TRUE(),
+
+    ISBLANK(Pearson) || ISBLANK(Elasticidade),
+        "Dados insuficientes",
+
+    Pearson <= -0.70 && Elasticidade < 0,
+        "Relação consistente",
+
+    Pearson >= 0.70 && Elasticidade < 0,
+        "Correlação histórica positiva / elasticidade negativa",
+
+    Pearson <= -0.70 && Elasticidade >= 0,
+        "Correlação negativa / elasticidade positiva",
+
+    ABS(Pearson) < 0.30,
+        "Correlação fraca",
+
+    "Relação a investigar"
+)
