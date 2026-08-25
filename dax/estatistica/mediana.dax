@@ -1,0 +1,1 @@
+Mediana = MEDIANX(fVendas, fVendas[preco_venda])
