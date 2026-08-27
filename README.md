@@ -27,6 +27,7 @@ Este espaço é dedicado a centralizar códigos, scripts e soluções que desenv
 
 * **LinkedIn:** https://www.linkedin.com/in/jaquelinemoreiradeoliveira/
 * **E-mail:** jaque.moliv@gmail.com
+* **Portfólio:** https://sites.google.com/view/jmobi/home
 
 ---
 *Este repositório está em constante evolução, refletindo meus aprendizados e novos projetos no ecossistema de dados.*
