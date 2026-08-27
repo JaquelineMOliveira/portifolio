@@ -26,7 +26,7 @@ Este espaço é dedicado a centralizar códigos, scripts e soluções que desenv
 ## 📬 Contato
 
 * **LinkedIn:** https://www.linkedin.com/in/jaquelinemoreiradeoliveira/
-* **E-mail:** jaque.moliv@gmail.com
+* **E-mail:** jaquelinem60@gmail.com
 * **Portfólio:** https://sites.google.com/view/jmobi/home
 
 ---
