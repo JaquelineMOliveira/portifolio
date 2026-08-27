@@ -16,17 +16,17 @@ Este espaço é dedicado a centralizar códigos, scripts e soluções que desenv
 
 ## 📂 O que você encontrará por aqui
 
-* **`queries-sql/`** — Consultas otimizadas para extração de relatórios de vendas, estoque e financeiro (focadas em ambientes corporativos e ERP Protheus).
-* **`dax-measures/`** — Modelos de medidas DAX avançadas, cálculos de tendências e tabelas calendário para dashboards analíticos.
-* **`automations/`** — Scripts em Google Apps Script para integração de planilhas, formulários e notificações via Slack.
+* **`queries-sql/`**        — Consultas otimizadas para extração de relatórios de vendas, estoque e financeiro (focadas em ambientes corporativos e ERP Protheus).
+* **`dax-measures/`**       — Modelos de medidas DAX avançadas, cálculos de tendências e tabelas calendário para dashboards analíticos.
+* **`automations/`**        — Scripts em Google Apps Script para integração de planilhas, formulários e notificações via Slack.
 * **`dashboards-configs/`** — Documentações, estruturas e códigos de suporte para relatórios no Power BI e Looker Studio.
 
 ---
 
 ## 📬 Contato
 
-* **LinkedIn:** https://www.linkedin.com/in/jaquelinemoreiradeoliveira/
-* **E-mail:** jaquelinem60@yahoo.com
+* **LinkedIn:**  https://www.linkedin.com/in/jaquelinemoreiradeoliveira/
+* **E-mail:**    jaquelinem60@yahoo.com
 * **Portfólio:** https://sites.google.com/view/jmobi/home
 
 ---
