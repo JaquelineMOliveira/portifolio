@@ -1,14 +1,13 @@
+/**
+ * Script responsável por automatizar a importação, conversão e consolidação de 
+ * arquivos em formato Excel (.xlsx) localizados em uma pasta do Google Drive. 
+ * O processo identifica os cabeçalhos específicos de produtos, limpa e padroniza 
+ * os dados de quantidade e preço de venda, agrega duplicatas e preenche a aba 
+ * de destino configurada no Google Sheets.
+ */
+
 const FOLDER_ID = 'id_da_pasta';
 const SHEET_NAME = 'Aba_entrada_informacoes';
-
-
-/*function onOpen() { 
-  SpreadsheetApp.getUi() 
-  .createMenu('Automação de Importação') 
-  .addItem('Importar e Consolidar Dados', 'importarDados') 
-  .addToUi(); 
-  }
-*/
 
 function importarDados() {
   const ui = SpreadsheetApp.getUi();
@@ -36,7 +35,6 @@ function importarDados() {
     while (files.hasNext()) {
       const file = files.next();
 
-      // 🔄 Converte XLSX → Google Sheets
       const tempFile = Drive.Files.create(
         {
           name: file.getName(),
@@ -54,7 +52,6 @@ function importarDados() {
         continue;
       }
 
-      // 🔍 Encontrar linha de cabeçalho
       let startRow = -1;
       for (let i = 0; i < data.length; i++) {
         const row = data[i];
@@ -82,7 +79,6 @@ function importarDados() {
         continue;
       }
 
-  
       for (let i = startRow + 1; i < data.length; i++) {
         const row = data[i];
 
@@ -113,10 +109,8 @@ function importarDados() {
         totalRowsProcessed++;
       }
 
-
       DriveApp.getFileById(tempFile.id).setTrashed(true);
     }
-
 
     sheet.clear();
 
@@ -147,8 +141,6 @@ ${finalData.length} linhas consolidadas`);
     ui.alert(`Erro: ${error.message}`);
   }
 }
-
-// 🔧 Funções auxiliares (mantidas)
 
 function extrairCodigoEDescricao(codigoDescricao) {
   const codigoProduto = codigoDescricao.split(' ')[0];
@@ -191,7 +183,6 @@ function limparQuantidade(valor) {
 
   return isNaN(num) ? 0 : num;
 }
-
 
 function importarPedidos() {
   Logger.log("OK");
